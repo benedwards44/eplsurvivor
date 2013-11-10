@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block page-title %}
+    EPL Survivor - Login or Register
+{% endblock %}
+
+{% block content %}
+    <div class="subheader">
+        <h2>EPL Survivor!</h2>
+    </div>
+    
+    <div class="full">
+        <p>
+            Welcome to EPL Survivor! Join groups, create your own and play with friends.
+        </p>
+        <p>
+            EPL Survivor is a tipping competition based around the English Premier League. The rules are simple, choose one team to win or draw each week. If your team loses, you're out! Outlast all other players and you win the entire prize pool of your group.
+        </p>
+        <p>
+            Once you've picked a team for a week, you can no longer choose that team for any following weeks. So make your picks wisely.
+        </p>
+        <p>
+            Head over to the <a href="/rules/">rules</a> page to see a full list of rules.
+        </p>
+    </div>
+
+    <hr/>
+    
+    <div class="onehalf">
+        
+        <h2>Login</h2>
+
+        <form action="/" method="post">{% csrf_token %}
+
+            {% if login_form.errors %}
+                <span style="color:#900;">
+                    {{ login_form.non_field_errors }}
+                </span>
+                <br/><br/>
+            {% endif %}
+
+            <label for="id_username">E-mail</label><br/>
+            <input type="email" id="id_username" name="username" class="txt" required />
+            <br/>
+                
+            <label for="id_password">Password</label><br/>
+            <input type="password" id="id_password" name="password" class="txt" required />
+            
+            <br/><br/>
+
+            <input type="submit" value="Login" class="sendm" name="login" />
+
+        </form>
+
+    </div>
+
+    <div class="onehalf">
+    
+        <h2>Register</h2>
+
+        <form action="/" method="post">{% csrf_token %}
+
+            {% if registration_form.errors %}
+                <span style="color:#900;">
+                    {{ registration_form.non_field_errors }}
+                </span>
+                <br/><br/>
+            {% endif %}
+
+            <table>
+                <tr>
+                    <td>
+                        <label for="id_first_name">First Name</label><br/>
+                        <input type="text" id="id_first_name" name="first_name" class="txt" required />
+                    </td>
+                    <td>
+                        <label for="id_last_name">Last Name</label><br/>
+                        <input type="text" id="id_last_name" name="last_name" class="txt" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="id_username">E-mail</label><br/>
+                        <input type="email" id="id_email" name="email" class="txt" required />
+                    </td>
+                    <td>
+                        <label for="id_password">Password</label><br/>
+                        <input type="password" id="id_password" name="password" class="txt" required />
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" value="Register" class="sendm" name="register" />
+        
+
+        </form>
+
+    </div>
+
+    <div class="clear"></div>
+    <!--
+    <div class="full" style="margin-top:40px;">
+        <h3>Or login/register using:</h3>
+        <br/>
+        <img src="/static/images/login_facebook.png"  />
+        <img src="/static/images/login_google.png" />
+    </div>
+    -->
+        
+{% endblock %}

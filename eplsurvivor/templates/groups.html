@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block page-title %}
+    EPL Survivor - Groups
+{% endblock %}
+
+{% block content %}
+    <div class="subheader">
+        <h2>My Groups</h2>
+    </div>
+    
+    <div class="full">
+
+    	{% if my_active_groups %}
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="st dc">
+                <thead>
+                    <tr>
+                        <td colspan="5">Active Groups</td>
+                    </tr>
+                </thead>
+                <tr class="secondh">
+                    <td>Name</td>
+                    <td>Round Started</td>
+                    <td>Prize Pool</td>
+                    <td>Players Remaining</td>
+                </tr>
+                {% for group in my_active_groups %}
+                    <tr>
+                      <td><a href="/groups/{{ group.id }}">{{ group.name }}</a></td>
+                      <td>{{ group.start_round }}</td>
+                      <td>&pound;{{ group.prize_pool }}</td>
+                      <td>{{ group.active_players }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+    	{% else %}
+    		<p>
+                You are not a member of any groups. Please join a group below, or start your own.
+            </p>
+    	{% endif %}
+
+        <br/><br/>
+
+ 	</div>
+
+ 	<hr />
+
+    <br/> 
+
+ 	<div class="onehalf">
+
+ 		<h3>Join Group</h3>
+
+        <p>
+            Already know a group you want to join? Select from the list and enter the password. If you don't know the password, get a hold of the group admin, or create your own group to the right.
+        </p>
+
+ 		<form action="/groups/" method="post">{% csrf_token %}
+
+            {% if join_group_form.errors %}
+                <span style="color:#900;">
+                    {{ join_group_form.non_field_errors }}
+                </span>
+                <br/><br/>
+            {% endif %}
+        
+            <label for="id_group_name">Group Name</label><br/>
+            <select class="txt" id="id_name" name="name">
+            	<option value=""></option>
+            	{% for group in available_groups %}
+                    <option value="{{ group.name }}">{{ group.name }}</option>
+            	{% endfor %}
+            </select>
+            <br/>
+                
+            <label for="id_password">Password</label><br/>
+            <input type="password" id="id_password" name="password" class="txt" required />
+            
+            <br/><br/>
+            <input type="submit" value="Join Group" class="sendm" name="join" />
+
+        </form>
+
+ 	</div>
+
+
+ 	<div class="onehalf" style="margin-left:30px;">
+
+ 		<h3>Create Group</h3>
+
+        <p>
+            Want to create your own group? Give your group a name and specify a password.
+        </p>
+
+        <p>
+            The start week lets you set what week of the EPL you want your group to start. This will need to be in the future of the current week, and give you enough time to recruit your friends and collect money from them.
+        </p>
+
+        <p>
+            The entry fee lets you specifiy how much you want to charge per player for your group.
+        </p>
+
+ 		<form action="/groups/" method="post">{% csrf_token %}
+
+            {% if create_group_form.errors %}
+                <span style="color:#900;">
+                    {{ create_group_form.non_field_errors }}
+                </span>
+                <br/><br/>
+            {% endif %}
+
+            <label for="id_name">Group Name</label><br/>
+            <input type="text" id="id_name" name="name" class="txt" required />
+            <br/>
+                
+            <label for="id_password">Password</label><br/>
+            <input type="password" id="id_password" name="password" class="txt" required />
+            <br />
+
+            <div style="float:left;">
+                <label for="id_start_round">Start Week</label><br/>
+                <input type="number" id="id_start_round" name="start_round" class="txt" max_length="2" style="width:50px;" required />
+            </div>
+
+            <div style="float:left;margin-left:30px;">
+                <label for="id_entry_fee">Entry Fee</label><br/>
+                <input type="number" id="id_entry_fee" name="entry_fee" class="txt" max_length="2" style="width:50px;" required />
+            </div>
+
+            <div style="clear:both;"></div>
+
+
+            
+            <br/><br/>
+
+            <input type="submit" value="Create Group" class="sendm" name="create" />
+
+        </form>
+
+ 	</div>
+{% endblock %}

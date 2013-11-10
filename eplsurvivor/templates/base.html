@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block page-title %}EPL Survivor{% endblock %}</title>
+        <meta name="description" content="EPL Survivor is a website for tipping on the English Premier League with your friends.">
+        <meta name="keywords" content="epl, survivor, last man standing, premier league, soccer, football, tipping, betting, eplsurvivor, english premier league">
+        <meta name="author" content="Ben Edwards">
+
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
+        <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico">
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.animate-shadow.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.cycle.all.js"></script>
+        <script type="text/javascript" src="/static/js/custom.js"></script>
+        <link rel="stylesheet" type="text/css" media="all" href="/static/fancybox/jquery.fancybox.css"/>
+        <script type="text/javascript" src="/static/fancybox/jquery.fancybox.js?v=2.0.6"></script>
+        <script type="text/javascript" src="/static/js/mail.js"></script>
+        {% block extra-scripts %}{% endblock %}
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-18288189-18']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </head>
+    
+    <body id="sub">
+        <div class="header">
+            <div class="element">
+                <div class="logo">
+                    <h1><a href="/"></a></h1>
+                </div>
+                <div class="menues">
+                    <ul class="mainlinks">
+                        {% if user.is_authenticated %}
+                            <li><span style="color:white;font-size:1.1em;">Logged in as: {{ user.first_name }}&nbsp;{{ user.last_name }}</span></li>
+
+                            <li>
+                                <a href="/groups">My Groups</a>
+                                <ul>
+                                    {% if my_active_groups %}
+                                        {% for group in my_active_groups %}
+                                        <li><a href="/groups/{{ group.id }}">{{ group.name }}</a></li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li><a>You aren't a member of any groups</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        <li><a href="/rules/">Rules</a></li>
+                        {% if user.is_authenticated %}
+                            {% if user.is_staff %}
+                                <li>
+                                    <a href="#">Results</a>
+                                    <ul>
+                                        {% for i in "xxxxxxxxxxxxxxxxxxx" %}
+                                        <li>
+                                            <a href="/results/{{ forloop.counter }}">Week #{{ forloop.counter }}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        <li><a href="/dologout/">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            <div class="clear"></div>
+        </div>
+
+        <div id="content">
+            <div class="element">
+                {% block content %}{% endblock %}
+                <div class="clear"></div>
+            </div>
+        </div>
+        
+        <div class="ads"></div>
+        
+        <div class="footer">
+            <div class="element">
+                <div class="footnote">
+                    Copyright &copy; website by <a href="http://www.benedwards.co.nz" target="_blank">Ben Edwards</a>
+                    <span><a href="#top">Back To Top</a></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
