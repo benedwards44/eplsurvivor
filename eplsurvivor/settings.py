@@ -3,7 +3,7 @@
 import os.path
 import socket
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
 
@@ -11,14 +11,14 @@ ADMINS = (
     ('Ben Edwards', 'ben@benedwards.co.nz'),
 )
 
-DEFAULT_FROM_EMAIL = 'EPL Survivor 13/14 <mailer@eplsurvivor.com>'
+DEFAULT_FROM_EMAIL = 'EPL Survivor <mailer@eplsurvivor.com>'
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'eplsurvivor.db',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'ben_eplsurvivor',                      # Or path to database file if using sqlite3.
         'USER': 'ben',                      # Not used with sqlite3.
         'PASSWORD': 'hfzVMSNv2MtVnBAG',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -124,6 +124,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.google.GoogleBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,9 +142,11 @@ INSTALLED_APPS = (
     'survivor',
     'sorl.thumbnail',
     'chronograph',
+    'registration',
+    'social_auth',
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+#SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -167,3 +176,19 @@ LOGGING = {
         },
     }
 }
+
+SALESFORCE_CONSUMER_KEY     = '3MVG99qusVZJwhsnmdmjq1uHdUrHw7YM6LakYhCxhvP3IMzoLXUB_cjFdpUhGMttiN7ooMHs3sTIF6emzDyzh'
+SALESFORCE_CONSUMER_SECRET  = '2335697909761120514'
+SALESFORCE_INSTANCE_URL     = 'https://eu2.salesforce.com/services/data/v29.0/'
+SALESFORCE_POST_GROUP_URL   = SALESFORCE_INSTANCE_URL + 'chatter/feeds/record/0F9b0000000PYVU/feed-items'
+SALESFORCE_HEADERS          = {'Authorization': 'Bearer 00Db0000000agC7!AQUAQIfaqgWzGeGuo1oUXAZbAqZgyso.tiQTNjWbNRXm1xN_8iAwiWCnZdRdtkEW9bV5RMDjUA8KmM33jIaeL1B4M0imas3A', 'content-type': 'application/json'}
+
+FACEBOOK_APP_ID                 = '1375158226069437'
+FACEBOOK_API_SECRET             = '72e8ecda7260fd146b4c9159f15367c1'
+FACEBOOK_EXTENDED_PERMISSIONS   = ['email']
+
+GOOGLE_OAUTH2_CLIENT_ID      = '600895131807-048uhp67v2p8j5m35l16dbaerht3lqri.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET  = 'vHfsgx6XgppW5C6zkEMkk4Yl'
+
+LOGIN_URL           = '/'
+LOGIN_REDIRECT_URL  = '/'

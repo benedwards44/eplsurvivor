@@ -41,6 +41,9 @@ class Group(models.Model):
 
     def prize_pool(self):
         return self.entry_fee * self.player_set.all().count()
+    
+    def ordered_players(self):
+        return self.player_set.order_by('-alive','-died_at_round','user__first_name')
 
 class Player(models.Model):
     group = models.ForeignKey(Group)

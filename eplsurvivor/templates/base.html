@@ -56,20 +56,9 @@
                                 </ul>
                             </li>
                         {% endif %}
+                        <li><a href="http://www.premierleague.com/en-gb.html" target="_blank">EPL Site</a></li>
                         <li><a href="/rules/">Rules</a></li>
                         {% if user.is_authenticated %}
-                            {% if user.is_staff %}
-                                <li>
-                                    <a href="#">Results</a>
-                                    <ul>
-                                        {% for i in "xxxxxxxxxxxxxxxxxxx" %}
-                                        <li>
-                                            <a href="/results/{{ forloop.counter }}">Week #{{ forloop.counter }}</a>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endif %}
                         <li><a href="/dologout/">Logout</a></li>
                         {% endif %}
                     </ul>

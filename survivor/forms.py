@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
-from survivor.models import Group, Comment, Pick, Player, Match
+from survivor.models import Group, Comment, Pick, Player
 from django.contrib.auth import authenticate, login, logout
 
 class CreateGroupForm(forms.Form):
@@ -75,10 +75,5 @@ class PickForm(ModelForm):
                     raise forms.ValidationError("You have already picked this team for another round in the competition. Please choose another team.")
 
         return cleaned_data
-
-class ResultForm(ModelForm):
-    class Meta:
-        model = Match
-        fields = ['team_one', 'team_two', 'winner']
 
     

@@ -14,14 +14,13 @@
            <table>
                 <tr>
                     <td width="125"><strong>Prize Pool:</strong></td>
-                    <td>£{{ group.prize_pool }}</td>
+                    <td>&pound;{{ group.prize_pool }}</td>
                 </tr>
                 <tr>
                     <td><strong>Players Remaining:</strong></td>
                     <td>{{ group.active_players }}</td>
                 </tr>
            </table>
-
         </div>
         <div class="clear"></div>
     </div>
@@ -43,7 +42,7 @@
                         <td style="width:90px;text-align:center;">{{ round }}</td>
                     {% endfor %}
                 </tr>
-                {% for player in group.player_set.all %}
+                {% for player in group.ordered_players %}
                     <tr>
                         <td style="text-align:center;">
                             {% if player.alive %}
@@ -115,7 +114,7 @@
 					<div class="comment-meta commentmetadata">
 						{{ comment.created_date }}	
 					</div>
-					<p>{{ comment.comment }}</p>
+					<p>{{ comment.comment|linebreaks }}</p>
 				</li>
 			{% endfor %}
 	    </ol>

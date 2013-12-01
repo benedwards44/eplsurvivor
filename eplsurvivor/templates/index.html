@@ -47,8 +47,10 @@
             <input type="password" id="id_password" name="password" class="txt" required />
             
             <br/><br/>
-
-            <input type="submit" value="Login" class="sendm" name="login" />
+            
+            <input type="submit" value="Login" class="sendm" name="login" style="float:left;" />
+            
+            <a href="{% url 'auth_password_reset' %}" style="float:left;margin-left:60px;">Forgot Password?</a>
 
         </form>
 
@@ -92,19 +94,25 @@
 
             <input type="submit" value="Register" class="sendm" name="register" />
         
-
         </form>
 
     </div>
 
     <div class="clear"></div>
-    <!--
-    <div class="full" style="margin-top:40px;">
-        <h3>Or login/register using:</h3>
-        <br/>
-        <img src="/static/images/login_facebook.png"  />
-        <img src="/static/images/login_google.png" />
+
+    <div class="full" style="margin-top:40px;text-align:center;">
+        <div style="margin:0 auto;">
+            <a href="{% url 'socialauth_begin' 'facebook' %}">
+                <img src="/static/images/facebook_login.png" border="0" />
+            </a>
+            <!--
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'socialauth_begin' 'google' %}">
+                <img src="/static/images/google_login.png" border="0" />
+            </a>
+            -->
+        </div>
     </div>
-    -->
+
         
 {% endblock %}

@@ -1,6 +1,9 @@
 from django.core.management.base import NoArgsCommand, CommandError, BaseCommand
 from survivor.models import Player, Pick
 from django.core.mail import send_mail
+from django.conf import settings
+import json
+import requests
      
 class Command(BaseCommand):
     args = '<week>'
@@ -23,3 +26,7 @@ class Command(BaseCommand):
                 #['ben@benedwards.co.nz'],
                 fail_silently=True
             )
+            
+        chatter_text = 'Reminder: Week ' + args[0] + ' picks are closing tomorrow. You have until tomorrow to get your picks in. Don\'t forget!\n\nPosted via Chatter REST API - http://eplsurvivor.com'
+        chatter_post = {"body": { "messageSegments" : [{ "type" : "text", "text": chatter_text}]}}
+        r = requests.post(settings.SALESFORCE_POST_GROUP_URL, data=json.dumps(chatter_post), headers=settings.SALESFORCE_HEADERS)

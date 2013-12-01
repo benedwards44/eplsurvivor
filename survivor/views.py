@@ -1,12 +1,11 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from survivor.models import Player, Group, Comment, Pick, Team, Match
-from survivor.forms import CreateGroupForm, JoinGroupForm, CommentForm, LoginForm, RegistrationForm, PickForm, ResultForm
+from survivor.forms import CreateGroupForm, JoinGroupForm, CommentForm, LoginForm, RegistrationForm, PickForm
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.forms.formsets import formset_factory
-
+from django.forms.models import modelformset_factory
 import datetime
 
 def index(request):
@@ -190,29 +189,43 @@ def results(request, week_number):
 	if not request.user.is_staff:
 		return HttpResponseRedirect('/')
 
-	results = Match.objects.filter(week=week_number).values('id', 'week','team_one','team_two','winner')
-	ResultsFormSet = formset_factory(ResultForm, extra=0)
-	results_formset = ResultsFormSet(initial=results)
+	results = Match.objects.filter(week=week_number)
+	ResultsFormSet = modelformset_factory(Match, extra=0, fields=('team_one','team_two','winner'))
 
 	if request.method == 'POST':
 
-		results_formset = ResultForm(request.POST)
-
-		print results_formset.is_valid()
+		results_formset = ResultsFormSet(request.POST, queryset=results)
 
 		if results_formset.is_valid():
 			
-			print results_formset
-
 			results_formset.save()
+
+			picks = Pick.objects.filter(week=week_number)
+
+			for pick in Pick.objects.filter(week=week_number):
+				for match in Match.objects.filter(week=week_number):
+					if pick.player.alive and (pick.team == match.team_one or pick.team == match.team_two):
+						if (pick.team == match.team_one and match.winner == 'Team One') or match.winner == 'Draw':
+							pick.result = 'Correct'
+
+						if (pick.team == match.team_two and match.winner == 'Team Two') or match.winner == 'Draw':
+							pick.result = 'Correct'
+
+						if (pick.team == match.team_one and match.winner == 'Team Two') or (pick.team == match.team_two and match.winner == 'Team One'):
+							pick.result = 'Incorrect'
+							player = Player.objects.get(id=pick.player.id)
+							player.alive = False
+							player.died_at_round = week_number
+							player.save()
+
+						pick.save()
 
 			return HttpResponseRedirect('/results/' + str(week_number))
 
 	else:
-		results_formset = ResultsFormSet(initial=results)
+		results_formset = ResultsFormSet(queryset=results)
 
 	return render_to_response('results.html', RequestContext(request, {'week_number': week_number, 'results_formset': results_formset}))
-
 
 def dologout(request):
 	logout(request)
